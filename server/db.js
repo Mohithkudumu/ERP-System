@@ -13,7 +13,9 @@ let db;
 export async function getDb() {
   if (db) return db;
 
-  const SQL = await initSqlJs();
+  const SQL = await initSqlJs({
+    locateFile: file => `https://sql.js.org/dist/${file}`
+  });
 
   if (!isServerless && fs.existsSync(DB_PATH)) {
     const fileBuffer = fs.readFileSync(DB_PATH);
