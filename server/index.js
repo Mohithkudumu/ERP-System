@@ -171,12 +171,16 @@ app.use('/api/invoices', createCrudRoutes('invoices', [
     'invoice_number', 'customer', 'amount', 'due_date', 'status'
 ]));
 
-// ─── Start Server ─────────────────────────────────────────
-async function start() {
-    await getDb();
-    app.listen(PORT, () => {
-        console.log(`✅ ERP API server running on http://localhost:${PORT}`);
-    });
-}
+// ─── Export for Vercel Serverless ──────────────────────────
+export default app;
 
-start().catch(console.error);
+// ─── Start Server (local dev only) ────────────────────────
+if (process.env.NODE_ENV !== 'production') {
+    async function start() {
+        await getDb();
+        app.listen(PORT, () => {
+            console.log(`ERP API server running on http://localhost:${PORT}`);
+        });
+    }
+    start().catch(console.error);
+}
